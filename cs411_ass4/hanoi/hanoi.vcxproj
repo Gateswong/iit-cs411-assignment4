@@ -41,9 +41,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <ExecutablePath>.;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>.;$(IncludePath)</IncludePath>
+    <ReferencePath>.;$(ReferencePath)</ReferencePath>
+    <LibraryPath>GL;.;$(LibraryPath)</LibraryPath>
+    <SourcePath>.;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <ExecutablePath>.;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>.;$(IncludePath)</IncludePath>
+    <ReferencePath>.;$(ReferencePath)</ReferencePath>
+    <LibraryPath>GL;.;$(LibraryPath)</LibraryPath>
+    <SourcePath>.;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -76,6 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="hanoi.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
