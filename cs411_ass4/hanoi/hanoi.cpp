@@ -230,6 +230,7 @@ void drawPiece(int index)
 	// draw the piece
 	glPushMatrix();
 	glTranslatef(piece[index].pos.x, piece[index].pos.y, piece[index].pos.z);
+	printf("    index %d | direction (%f, %f) | rotates %f\n", index, piece[index].dir.x, piece[index].dir.z, atan2(piece[index].dir.x, piece[index].dir.z)*180/3.1415926);
 	glutSolidTorus(0.2*board.r, radius, stacks, slices);
 	glPopMatrix();
 	glMaterialfv(GL_FRONT, GL_EMISSION, emOff);
@@ -274,12 +275,32 @@ void movePiece(int fromRod, int toRod)
 // Calculate the interpolate path for active piece
 void interpolatePath(Vec3d startPos, Vec3d targetPos, float u, Vec3d &interpPos)
 {
-	// TODO replace these lines:
-	// ============================================
-	interpPos.x = (u)*targetPos.x+(1-u)*startPos.x;
+	float v1 = 5*u;
+	float v2 = (5.0/3)*u-(1.0/3);
+	float v3 = 5*u-4;
+
+	if (v1>=0 && v1<=1)	{
+		interpPos.x = startPos.x;
+		interpPos.z = (v1)*2.5+(1-v1)*startPos.z;
+	} else if(v2>=0 && v2<=1) {
+		interpPos.x = (-2*v2*v2*v2+3*v2*v2)*targetPos.x+(2*v2*v2*v2-3*v2*v2+1)*startPos.x+(v2*v2*v2-2*v2*v2+v2)*(18)+(v2*v2*v2-v2*v2)*(8);
+		interpPos.z = (-2*v2*v2*v2+3*v2*v2)*2+(2*v2*v2*v2-3*v2*v2+1)*2+(v2*v2*v2-2*v2*v2+v2)*(17)+(v2*v2*v2-v2*v2)*(-12);
+	} else if(v3>=0 && v3<=1) {
+		interpPos.x = targetPos.x;
+		interpPos.z = (v3)*targetPos.z+(1-v3)*2.5;
+	}
+
 	interpPos.y = (u)*targetPos.y+(1-u)*startPos.y;
-	interpPos.z = (u)*targetPos.z+(1-u)*startPos.z;
-	// ============================================
+	
+	// Show values
+	printf("hanoi tower | u=%f | v1=%f | v2=%f | v3=%f\n", u, v1, v2, v3);
+
+	//// TODO replace these lines:
+	//// ============================================
+	//interpPos.x = (u)*targetPos.x+(1-u)*startPos.x;
+	//interpPos.y = (u)*targetPos.y+(1-u)*startPos.y;
+	//interpPos.z = (u)*targetPos.z+(1-u)*startPos.z;
+	//// ============================================
 }
 
 // ============================================================================
@@ -350,7 +371,7 @@ void idle(void)
 		if(u>1) u=1;
 		if(activePiece.index>=0 && activePiece.index<=2)
 			interpolatePath(activePiece.startPos,activePiece.targetPos,u,
-			piece[activePiece.index].pos);
+				piece[activePiece.index].pos);
 		if(u>=1)    
 		{
 			activePiece.index = -1;
