@@ -49,20 +49,19 @@ typedef struct {
 	int fps;
 } Context;
 
-#define MAX_PIECES 20
 
 // Game Board
 typedef struct {
 	float r;			// base disk radius
 	float xMin, yMin,
 		xMax, yMax;		// base plate coordinates
-	Vec3d pos[3][MAX_PIECES];
+	Vec3d pos[3][3];
 						// Possible piece positions on board
 						// pos[rod, stack]
 	int occupancy[3][3];
 } Board;
 
-Piece piece[MAX_PIECES];
+Piece piece[3];
 Board board;
 ActivePiece activePiece;
 Context C;
